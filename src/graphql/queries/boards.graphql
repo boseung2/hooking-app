@@ -1,0 +1,12 @@
+query Boards {
+  boards {
+    id
+    type
+    content
+    writerId
+    views
+    likes
+    createDate
+    modifiedDate
+  }
+}

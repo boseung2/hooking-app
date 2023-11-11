@@ -1,23 +1,10 @@
 "use client";
 
-import { gql, useQuery } from "@apollo/client";
+import { useBoardsQuery } from "@/generated/graphql";
 import React from "react";
 
-const BOARDS_QUERY = gql`
-  query BoardsQuery {
-    boards {
-      id
-      type
-      content
-      writerId
-      views
-      likes
-    }
-  }
-`;
-
 function BoardList() {
-  const { data, loading, error } = useQuery(BOARDS_QUERY);
+  const { data, loading, error } = useBoardsQuery();
 
   if (loading) return <p>...loading</p>;
   if (error) return <p>{error.message}</p>;
