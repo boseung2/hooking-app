@@ -1,10 +1,4 @@
 import Providers from "@/config/providers";
-import type { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Hooking",
-  description: "Hooking community",
-};
 
 export default function RootLayout({
   children,
@@ -12,7 +6,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ko">
+    <html lang="en">
       <body>
         <Providers>{children}</Providers>
       </body>
