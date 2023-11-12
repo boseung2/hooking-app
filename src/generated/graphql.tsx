@@ -16,6 +16,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  DateTime: { input: any; output: any; }
 };
 
 export type Board = {
@@ -23,30 +24,45 @@ export type Board = {
   /** 게시글 본문 */
   content: Scalars['String']['output'];
   /** 생성일 */
-  createDate: Scalars['String']['output'];
+  createDate: Scalars['DateTime']['output'];
   /** 게시글 고유 아이디 */
   id: Scalars['Int']['output'];
   /** 좋아요 수 */
   likes: Scalars['Int']['output'];
   /** 수정일 */
-  modifiedDate: Scalars['String']['output'];
+  modifiedDate: Scalars['DateTime']['output'];
   /** 게시글 타입 */
   type: Scalars['String']['output'];
   /** 조회수 */
   views: Scalars['Int']['output'];
+  writer: User;
   /** 작성자 ID */
   writerId: Scalars['Int']['output'];
 };
 
 export type Query = {
   __typename?: 'Query';
+  Users: Array<User>;
   boards: Array<Board>;
+};
+
+export type User = {
+  __typename?: 'User';
+  /** 생성 일자 */
+  createdAt: Scalars['String']['output'];
+  /** 유저 이메일 */
+  email: Scalars['String']['output'];
+  id: Scalars['Int']['output'];
+  /** 업데이트 일자 */
+  updatedAt: Scalars['String']['output'];
+  /** 유저 이름 */
+  username: Scalars['String']['output'];
 };
 
 export type BoardsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type BoardsQuery = { __typename?: 'Query', boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, createDate: string, modifiedDate: string }> };
+export type BoardsQuery = { __typename?: 'Query', boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, views: number, likes: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, email: string } }> };
 
 
 export const BoardsDocument = gql`
@@ -55,7 +71,11 @@ export const BoardsDocument = gql`
     id
     type
     content
-    writerId
+    writer {
+      id
+      username
+      email
+    }
     views
     likes
     createDate
