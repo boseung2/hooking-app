@@ -1,4 +1,5 @@
 import Providers from "@/config/providers";
+import RootLayout from "@/layouts/RootLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,15 +7,13 @@ export const metadata: Metadata = {
   description: "Hooking community",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
-      <body>
-        <Providers>{children}</Providers>
+      <body style={{ height: "100vh" }}>
+        <Providers>
+          <RootLayout>{children}</RootLayout>
+        </Providers>
       </body>
     </html>
   );
