@@ -1,9 +1,8 @@
 import { PaginatedBoards } from "@/generated/graphql";
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { InMemoryCache } from "@apollo/client";
 
-export const apolloClient = new ApolloClient({
-  uri: "http://localhost:4000/graphql",
-  cache: new InMemoryCache({
+export const createApolloCache = (): InMemoryCache => {
+  return new InMemoryCache({
     typePolicies: {
       Query: {
         fields: {
@@ -24,5 +23,5 @@ export const apolloClient = new ApolloClient({
         },
       },
     },
-  }),
-});
+  });
+};
