@@ -1,16 +1,22 @@
-query Boards {
-  boards {
-    id
-    type
-    content
-    writer {
+query Boards($limit: Int, $cursor: Int) {
+  boards(limit: $limit, cursor: $cursor) {
+    cursor
+    boards {
       id
-      username
-      email
+      type
+      content
+      writerId
+      writer {
+        id
+        username
+        email
+        createdAt
+        updatedAt
+      }
+      views
+      likes
+      createDate
+      modifiedDate
     }
-    views
-    likes
-    createDate
-    modifiedDate
   }
 }

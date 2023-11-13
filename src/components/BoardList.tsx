@@ -8,13 +8,9 @@ import {
   SkeletonText,
   StackDivider,
   VStack,
-  Text,
 } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
-import React from "react";
-
-dayjs.extend(relativeTime);
+import BoardCard from "./BoardCard";
+import { Waypoint } from "react-waypoint";
 
 const Skeleton = () => (
   <Box w="100%" p="6">
@@ -30,7 +26,13 @@ const Skeleton = () => (
 );
 
 function BoardList() {
-  const { data, loading, error } = useBoardsQuery();
+  const LIMIT = 6;
+  const { data, loading, error, fetchMore } = useBoardsQuery({
+    variables: {
+      limit: LIMIT,
+      cursor: 1,
+    },
+  });
 
   if (loading)
     return (
@@ -45,22 +47,22 @@ function BoardList() {
 
   return (
     <VStack divider={<StackDivider borderColor="gray.200" />}>
-      {data?.boards.map((board) => (
-        <Box key={board.id} w="100%" p="6">
-          <Flex>
-            <Box minW="10">
-              <SkeletonCircle size="10" />
-            </Box>
-            <Box pl="6">
-              <Flex gap="2">
-                <Text fontWeight="bold">{board.writer.username}</Text>
-                <Text color="gray.500">
-                  {dayjs(board.createDate).fromNow()}
-                </Text>
-              </Flex>
-              <Text style={{ whiteSpace: "pre-line" }}>{board.content}</Text>
-            </Box>
-          </Flex>
+      {data?.boards.boards.map((board, i) => (
+        <Box key={board.id} w="100%">
+          {data.boards.cursor &&
+            i === data.boards.boards.length - LIMIT / 2 && (
+              <Waypoint
+                onEnter={() => {
+                  fetchMore({
+                    variables: {
+                      limit: LIMIT,
+                      cursor: data.boards.cursor,
+                    },
+                  });
+                }}
+              />
+            )}
+          <BoardCard board={board} />
         </Box>
       ))}
     </VStack>

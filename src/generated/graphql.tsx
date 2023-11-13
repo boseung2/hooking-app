@@ -40,10 +40,22 @@ export type Board = {
   writerId: Scalars['Int']['output'];
 };
 
+export type PaginatedBoards = {
+  __typename?: 'PaginatedBoards';
+  boards: Array<Board>;
+  cursor?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   Users: Array<User>;
-  boards: Array<Board>;
+  boards: PaginatedBoards;
+};
+
+
+export type QueryBoardsArgs = {
+  cursor?: InputMaybe<Scalars['Int']['input']>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type User = {
@@ -59,27 +71,36 @@ export type User = {
   username: Scalars['String']['output'];
 };
 
-export type BoardsQueryVariables = Exact<{ [key: string]: never; }>;
+export type BoardsQueryVariables = Exact<{
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  cursor?: InputMaybe<Scalars['Int']['input']>;
+}>;
 
 
-export type BoardsQuery = { __typename?: 'Query', boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, views: number, likes: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, email: string } }> };
+export type BoardsQuery = { __typename?: 'Query', boards: { __typename?: 'PaginatedBoards', cursor?: number | null, boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, email: string, createdAt: string, updatedAt: string } }> } };
 
 
 export const BoardsDocument = gql`
-    query Boards {
-  boards {
-    id
-    type
-    content
-    writer {
+    query Boards($limit: Int, $cursor: Int) {
+  boards(limit: $limit, cursor: $cursor) {
+    cursor
+    boards {
       id
-      username
-      email
+      type
+      content
+      writerId
+      writer {
+        id
+        username
+        email
+        createdAt
+        updatedAt
+      }
+      views
+      likes
+      createDate
+      modifiedDate
     }
-    views
-    likes
-    createDate
-    modifiedDate
   }
 }
     `;
@@ -96,6 +117,8 @@ export const BoardsDocument = gql`
  * @example
  * const { data, loading, error } = useBoardsQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */
