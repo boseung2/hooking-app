@@ -15,6 +15,8 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@types/datejs": "^0.0.36",
+    "dayjs": "^1.11.10",
     "framer-motion": "^10.16.4",
     "graphql": "^16.8.1",
     "next": "14.0.2",

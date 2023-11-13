@@ -8,7 +8,10 @@ import {
   SkeletonText,
   StackDivider,
   VStack,
+  Text,
 } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import React from "react";
 
 const Skeleton = () => (
@@ -26,6 +29,7 @@ const Skeleton = () => (
 
 function BoardList() {
   const { data, loading, error } = useBoardsQuery();
+  dayjs.extend(relativeTime);
 
   if (loading)
     return (
@@ -47,8 +51,12 @@ function BoardList() {
               <SkeletonCircle size="10" />
             </Box>
             <Box pl="6">
-              {board.writer.username}
-              <br />
+              <Flex gap="2">
+                <Text fontWeight="bold">{board.writer.username}</Text>
+                <Text color="gray.500">
+                  {dayjs(board.createDate).fromNow()}
+                </Text>
+              </Flex>
               {board.content}
             </Box>
           </Flex>
