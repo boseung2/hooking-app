@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  Divider,
-  Flex,
-  StackDivider,
-  VStack,
-} from "@chakra-ui/react";
+import { Container, Divider, Flex } from "@chakra-ui/react";
 import React from "react";
 
 function RootLayout({ children }: { children: React.ReactNode }) {

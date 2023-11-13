@@ -14,6 +14,8 @@ import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import React from "react";
 
+dayjs.extend(relativeTime);
+
 const Skeleton = () => (
   <Box w="100%" p="6">
     <Flex>
@@ -29,7 +31,6 @@ const Skeleton = () => (
 
 function BoardList() {
   const { data, loading, error } = useBoardsQuery();
-  dayjs.extend(relativeTime);
 
   if (loading)
     return (
@@ -57,7 +58,7 @@ function BoardList() {
                   {dayjs(board.createDate).fromNow()}
                 </Text>
               </Flex>
-              {board.content}
+              <Text style={{ whiteSpace: "pre-line" }}>{board.content}</Text>
             </Box>
           </Flex>
         </Box>
