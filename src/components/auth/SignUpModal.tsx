@@ -49,13 +49,13 @@ function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
         toast({ title: "회원가입을 환영합니다!", status: "success" });
       } else {
         toast({
-          title: "회원가입 도중 문제가 발생했습니다.",
+          title: "회원가입 도중 문제가 발생했습니다",
           status: "error",
         });
       }
     } catch (err) {
       toast({
-        title: "이메일 또는 유저 아이디가 중복됩니다.",
+        title: "이메일 또는 유저 아이디가 중복됩니다",
         status: "error",
       });
     }

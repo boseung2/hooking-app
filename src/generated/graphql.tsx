@@ -40,9 +40,36 @@ export type Board = {
   writerId: Scalars['Int']['output'];
 };
 
+/** 필드 에러 타입 */
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String']['output'];
+  message: Scalars['String']['output'];
+};
+
+/** 로그인 인풋 데이터 */
+export type LoginInput = {
+  emailOrUserId: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+};
+
+/** 로그인 반환 데이터 */
+export type LoginResponse = {
+  __typename?: 'LoginResponse';
+  accessToken?: Maybe<Scalars['String']['output']>;
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
+  login: LoginResponse;
   signUp: User;
+};
+
+
+export type MutationLoginArgs = {
+  loginInput: LoginInput;
 };
 
 
@@ -74,6 +101,7 @@ export type QueryBoardsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
 };
 
+/** 회원가입 인풋 데이터 */
 export type SignUpInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -96,6 +124,13 @@ export type User = {
   username: Scalars['String']['output'];
 };
 
+export type LoginMutationVariables = Exact<{
+  loginInput: LoginInput;
+}>;
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'LoginResponse', accessToken?: string | null, errors?: Array<{ __typename?: 'FieldError', field: string, message: string }> | null, user?: { __typename?: 'User', id: number, username: string, email: string, userId: string } | null } };
+
 export type SignUpMutationVariables = Exact<{
   signUpInput: SignUpInput;
 }>;
@@ -112,6 +147,49 @@ export type BoardsQueryVariables = Exact<{
 export type BoardsQuery = { __typename?: 'Query', boards: { __typename?: 'PaginatedBoards', cursor?: number | null, boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, userId: string, email: string, createdAt: string, updatedAt: string } }> } };
 
 
+export const LoginDocument = gql`
+    mutation login($loginInput: LoginInput!) {
+  login(loginInput: $loginInput) {
+    errors {
+      field
+      message
+    }
+    user {
+      id
+      username
+      email
+      userId
+    }
+    accessToken
+  }
+}
+    `;
+export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
+
+/**
+ * __useLoginMutation__
+ *
+ * To run a mutation, you first call `useLoginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLoginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [loginMutation, { data, loading, error }] = useLoginMutation({
+ *   variables: {
+ *      loginInput: // value for 'loginInput'
+ *   },
+ * });
+ */
+export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, options);
+      }
+export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
+export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
+export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
 export const SignUpDocument = gql`
     mutation signUp($signUpInput: SignUpInput!) {
   signUp(signUpInput: $signUpInput) {

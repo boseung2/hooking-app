@@ -1,6 +1,5 @@
-import { Flex } from "@chakra-ui/react";
+import { Flex, Image } from "@chakra-ui/react";
 import React from "react";
-import Image from "next/image";
 
 function TopHeader() {
   return (
@@ -13,12 +12,7 @@ function TopHeader() {
       borderBottom="1px"
       borderColor="gray.200"
     >
-      <Image
-        src="/assets/logo_black.png"
-        alt="Hooking"
-        width={160}
-        height={40}
-      />
+      <Image src="/assets/logo_black.png" alt="Hooking" width={20} height={6} />
     </Flex>
   );
 }
