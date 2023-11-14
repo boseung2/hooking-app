@@ -9,6 +9,7 @@ query Boards($limit: Int, $cursor: Int) {
       writer {
         id
         username
+        userId
         email
         createdAt
         updatedAt

@@ -1,9 +1,10 @@
 "use client";
 
-import { Box, Container, Flex } from "@chakra-ui/react";
+import { Box, Container } from "@chakra-ui/react";
 import React from "react";
 import BottomNavigation from "./BottomNavigation";
 import TopHeader from "./TopHeader";
+import AuthBottomNavigation from "./AuthBottomNavigation";
 
 function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -17,7 +18,8 @@ function RootLayout({ children }: { children: React.ReactNode }) {
       >
         <TopHeader />
         <Box pb={14}>{children}</Box>
-        <BottomNavigation />
+        {/* <BottomNavigation /> */}
+        <AuthBottomNavigation />
       </Container>
     </>
   );

@@ -40,6 +40,16 @@ export type Board = {
   writerId: Scalars['Int']['output'];
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  signUp: User;
+};
+
+
+export type MutationSignUpArgs = {
+  signUpInput: SignUpInput;
+};
+
 export type PaginatedBoards = {
   __typename?: 'PaginatedBoards';
   boards: Array<Board>;
@@ -49,13 +59,26 @@ export type PaginatedBoards = {
 export type Query = {
   __typename?: 'Query';
   Users: Array<User>;
+  board?: Maybe<Board>;
   boards: PaginatedBoards;
+};
+
+
+export type QueryBoardArgs = {
+  boardId: Scalars['Int']['input'];
 };
 
 
 export type QueryBoardsArgs = {
   cursor?: InputMaybe<Scalars['Int']['input']>;
   limit?: InputMaybe<Scalars['Int']['input']>;
+};
+
+export type SignUpInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+  username: Scalars['String']['input'];
 };
 
 export type User = {
@@ -67,9 +90,18 @@ export type User = {
   id: Scalars['Int']['output'];
   /** 업데이트 일자 */
   updatedAt: Scalars['String']['output'];
+  /** 유저 아이디 */
+  userId: Scalars['String']['output'];
   /** 유저 이름 */
   username: Scalars['String']['output'];
 };
+
+export type SignUpMutationVariables = Exact<{
+  signUpInput: SignUpInput;
+}>;
+
+
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', email: string, username: string, userId: string, createdAt: string, updatedAt: string, id: number } };
 
 export type BoardsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -77,9 +109,47 @@ export type BoardsQueryVariables = Exact<{
 }>;
 
 
-export type BoardsQuery = { __typename?: 'Query', boards: { __typename?: 'PaginatedBoards', cursor?: number | null, boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, email: string, createdAt: string, updatedAt: string } }> } };
+export type BoardsQuery = { __typename?: 'Query', boards: { __typename?: 'PaginatedBoards', cursor?: number | null, boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, userId: string, email: string, createdAt: string, updatedAt: string } }> } };
 
 
+export const SignUpDocument = gql`
+    mutation signUp($signUpInput: SignUpInput!) {
+  signUp(signUpInput: $signUpInput) {
+    email
+    username
+    userId
+    createdAt
+    updatedAt
+    id
+  }
+}
+    `;
+export type SignUpMutationFn = Apollo.MutationFunction<SignUpMutation, SignUpMutationVariables>;
+
+/**
+ * __useSignUpMutation__
+ *
+ * To run a mutation, you first call `useSignUpMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSignUpMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [signUpMutation, { data, loading, error }] = useSignUpMutation({
+ *   variables: {
+ *      signUpInput: // value for 'signUpInput'
+ *   },
+ * });
+ */
+export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignUpMutation, SignUpMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SignUpMutation, SignUpMutationVariables>(SignUpDocument, options);
+      }
+export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
+export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
+export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
 export const BoardsDocument = gql`
     query Boards($limit: Int, $cursor: Int) {
   boards(limit: $limit, cursor: $cursor) {
@@ -92,6 +162,7 @@ export const BoardsDocument = gql`
       writer {
         id
         username
+        userId
         email
         createdAt
         updatedAt
