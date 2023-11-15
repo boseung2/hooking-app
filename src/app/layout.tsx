@@ -1,5 +1,5 @@
 import Providers from "@/config/providers";
-import RootLayout from "@/layouts/RootLayout";
+import RootLayout from "@/components/layouts/RootLayout";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

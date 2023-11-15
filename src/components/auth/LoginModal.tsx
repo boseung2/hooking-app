@@ -16,11 +16,10 @@ import {
   VStack,
   FormControl,
   FormErrorMessage,
-  useToast,
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
+import { useUser } from "@/hooks/useUser";
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -35,8 +34,7 @@ function LoginModal({ isOpen, onClose }: LoginModalProps) {
     formState: { errors },
     setError,
   } = useForm<LoginMutationVariables>();
-  const router = useRouter();
-  const toast = useToast();
+  const { loadUserByAccessToken } = useUser();
 
   const onSubmit = async (formData: LoginMutationVariables) => {
     const { data } = await login({ variables: formData });
@@ -50,8 +48,7 @@ function LoginModal({ isOpen, onClose }: LoginModalProps) {
     }
 
     if (data && data.login.accessToken) {
-      localStorage.setItem("access_token", data.login.accessToken);
-      router.push("/");
+      loadUserByAccessToken(data.login.accessToken);
       onClose();
     }
   };

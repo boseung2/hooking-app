@@ -5,8 +5,11 @@ import React from "react";
 import BottomNavigation from "./BottomNavigation";
 import TopHeader from "./TopHeader";
 import AuthBottomNavigation from "./AuthBottomNavigation";
+import { useUser } from "@/hooks/useUser";
 
 function RootLayout({ children }: { children: React.ReactNode }) {
+  const { isLoggedIn } = useUser();
+
   return (
     <>
       <Container
@@ -18,8 +21,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
       >
         <TopHeader />
         <Box pb={14}>{children}</Box>
-        {/* <BottomNavigation /> */}
-        <AuthBottomNavigation />
+        {isLoggedIn ? <BottomNavigation /> : <AuthBottomNavigation />}
       </Container>
     </>
   );
