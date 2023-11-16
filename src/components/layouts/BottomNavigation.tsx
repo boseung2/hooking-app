@@ -1,9 +1,20 @@
 import { Center, Flex, Icon, Link } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import NextLink from "next/link";
 import { FaHome, FaUser } from "react-icons/fa";
+import {
+  BsFillPersonFill,
+  BsPerson,
+  BsFillHouseDoorFill,
+  BsHouseDoor,
+} from "react-icons/bs";
+import { useUser } from "@/hooks/useUser";
+import { usePathname } from "next/navigation";
 
 function BottomNavigation() {
+  const pathname = usePathname();
+  const { user } = useUser();
+
   return (
     <Flex
       bgColor="white"
@@ -19,12 +30,20 @@ function BottomNavigation() {
     >
       <Link as={NextLink} href="/">
         <Center>
-          <Icon as={FaHome} w="7" h="7" m="2" />
+          {pathname === "/" ? (
+            <Icon as={BsFillHouseDoorFill} w="7" h="7" m="2" />
+          ) : (
+            <Icon as={BsHouseDoor} w="7" h="7" m="2" />
+          )}
         </Center>
       </Link>
-      <Link as={NextLink} href="/user">
+      <Link as={NextLink} href={`/${user?.userId}`}>
         <Center>
-          <Icon as={FaUser} w="7" h="7" m="2" />
+          {pathname === `/${user?.userId}` ? (
+            <Icon as={BsFillPersonFill} w="7" h="7" m="2" />
+          ) : (
+            <Icon as={BsPerson} w="7" h="7" m="2" />
+          )}
         </Center>
       </Link>
     </Flex>

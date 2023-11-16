@@ -44,5 +44,5 @@ export function useUser() {
 
   const loading = logoutLoading;
 
-  return { loadUserByAccessToken, isLoggedIn, logout, loading };
+  return { user, loadUserByAccessToken, isLoggedIn, logout, loading };
 }
