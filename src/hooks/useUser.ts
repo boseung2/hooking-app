@@ -1,20 +1,24 @@
 import { userState } from "@/recoil/userState";
 import { useRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
-import { useMeQuery } from "@/generated/graphql";
+import { useLogoutMutation, useMeQuery } from "@/generated/graphql";
 import { useEffect } from "react";
+import { useApolloClient } from "@apollo/client";
 
 export function useUser() {
-  const [user, setUser] = useRecoilState(userState);
+  const client = useApolloClient();
   const router = useRouter();
+  const [user, setUser] = useRecoilState(userState);
   const accessToken =
     typeof window !== "undefined" ? localStorage.getItem("access_token") : null;
   const { data, refetch } = useMeQuery({ skip: !accessToken });
+  const [logoutMutation, { loading: logoutLoading }] = useLogoutMutation();
 
   const isLoggedIn = !!user;
 
   useEffect(() => {
     if (!accessToken) {
+      setUser(null);
       return;
     }
     refetch();
@@ -28,5 +32,17 @@ export function useUser() {
     router.refresh();
   };
 
-  return { loadUserByAccessToken, isLoggedIn };
+  const logout = async () => {
+    try {
+      await logoutMutation();
+      localStorage.removeItem("access_token");
+      await client.resetStore();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const loading = logoutLoading;
+
+  return { loadUserByAccessToken, isLoggedIn, logout, loading };
 }
