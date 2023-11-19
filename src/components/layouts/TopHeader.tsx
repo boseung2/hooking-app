@@ -24,7 +24,7 @@ function TopHeader() {
       align="center"
       fontWeight="bold"
       borderBottom="1px"
-      borderColor="gray.200"
+      borderColor="gray.100"
     >
       <Box />
       <Image src="/assets/logo_black.png" alt="Hooking" width={20} height={6} />

@@ -16,7 +16,7 @@ function RootLayout({ children }: { children: React.ReactNode }) {
         maxW="md"
         h="100%"
         borderX={["", "", "1px"]}
-        borderColor={["", "", "gray.200"]}
+        borderColor={["", "", "gray.100"]}
         p="0"
       >
         <TopHeader />

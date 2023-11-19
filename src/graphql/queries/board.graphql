@@ -1,0 +1,21 @@
+query board($boardId: Int!) {
+  board(boardId: $boardId) {
+    id
+    type
+    content
+    writerId
+    writer {
+      id
+      username
+      userId
+      email
+      createdAt
+      updatedAt
+    }
+    views
+    likes
+    reviews
+    createDate
+    modifiedDate
+  }
+}
