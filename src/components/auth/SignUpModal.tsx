@@ -19,6 +19,7 @@ import {
   Input,
   FormErrorMessage,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -66,8 +67,11 @@ function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
       <Modal isOpen={isOpen} onClose={onClose} size="full">
         <ModalOverlay />
         <ModalContent maxW="md" as="form" onSubmit={handleSubmit(onSubmit)}>
-          <ModalHeader>환영합니다!</ModalHeader>
-          <ModalCloseButton />
+          <ModalHeader>
+            <ModalCloseButton left={4} top={3} />
+            <Flex justify="center">환영합니다!</Flex>
+          </ModalHeader>
+
           <ModalBody>
             <Heading as="h2" pb="6">
               계정을 생성하세요
@@ -152,7 +156,7 @@ function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
           <ModalFooter>
             <Button
               type="submit"
-              colorScheme="teal"
+              colorScheme="blue"
               isLoading={loading}
               size="lg"
               w="95%"

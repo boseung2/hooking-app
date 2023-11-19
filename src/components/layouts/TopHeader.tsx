@@ -1,6 +1,4 @@
-import { useLogoutMutation } from "@/generated/graphql";
 import { useUser } from "@/hooks/useUser";
-import { useApolloClient } from "@apollo/client";
 import {
   Box,
   Flex,
@@ -13,7 +11,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import React from "react";
-import { FaRegSun } from "react-icons/fa";
+import { BsGear } from "react-icons/bs";
 
 function TopHeader() {
   const { isLoggedIn, logout, loading } = useUser();
@@ -35,7 +33,7 @@ function TopHeader() {
           <MenuButton
             as={IconButton}
             aria-label="Settings"
-            icon={<Icon as={FaRegSun} w="5" h="5" m="2" />}
+            icon={<Icon as={BsGear} w="5" h="5" m="2" />}
             variant="none"
           />
           <MenuList>

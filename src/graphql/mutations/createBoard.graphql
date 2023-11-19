@@ -1,0 +1,12 @@
+mutation createBoard($createBoardInput: CreateBoardInput!) {
+  createBoard(createBoardInput: $createBoardInput) {
+    id
+    type
+    content
+    writerId
+    views
+    likes
+    createDate
+    modifiedDate
+  }
+}

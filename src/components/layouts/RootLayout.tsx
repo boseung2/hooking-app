@@ -20,7 +20,9 @@ function RootLayout({ children }: { children: React.ReactNode }) {
         p="0"
       >
         <TopHeader />
-        <Box pb={14}>{children}</Box>
+        <Box pb={14}>
+          <main>{children}</main>
+        </Box>
         {isLoggedIn ? <BottomNavigation /> : <AuthBottomNavigation />}
       </Container>
     </>

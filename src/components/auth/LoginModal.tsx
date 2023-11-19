@@ -16,6 +16,7 @@ import {
   VStack,
   FormControl,
   FormErrorMessage,
+  Flex,
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -59,13 +60,15 @@ function LoginModal({ isOpen, onClose }: LoginModalProps) {
         <ModalOverlay />
         <ModalContent maxW="md" as="form" onSubmit={handleSubmit(onSubmit)}>
           <ModalHeader>
-            <Image
-              src="/assets/logo_black.png"
-              alt="Hooking"
-              width={20}
-              height={6}
-            />
-            <ModalCloseButton />
+            <ModalCloseButton left={4} top={3} />
+            <Flex justify="center">
+              <Image
+                src="/assets/logo_black.png"
+                alt="Hooking"
+                width={20}
+                height={6}
+              />
+            </Flex>
           </ModalHeader>
           <ModalBody>
             <Heading as="h2" pb="6">
@@ -106,7 +109,7 @@ function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <ModalFooter>
             <Button
               type="submit"
-              colorScheme="teal"
+              colorScheme="blue"
               isLoading={loading}
               size="lg"
               w="95%"

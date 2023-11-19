@@ -31,6 +31,8 @@ export type Board = {
   likes: Scalars['Int']['output'];
   /** 수정일 */
   modifiedDate: Scalars['DateTime']['output'];
+  /** 댓글 수 */
+  reviews: Scalars['Int']['output'];
   /** 게시글 타입 */
   type: Scalars['String']['output'];
   /** 조회수 */
@@ -38,6 +40,12 @@ export type Board = {
   writer: User;
   /** 작성자 ID */
   writerId: Scalars['Int']['output'];
+};
+
+/** 게시판 생성 인풋 데이터 */
+export type CreateBoardInput = {
+  content: Scalars['String']['input'];
+  type: Scalars['String']['input'];
 };
 
 /** 필드 에러 타입 */
@@ -63,10 +71,16 @@ export type LoginResponse = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  createBoard: Board;
   login: LoginResponse;
   logout: Scalars['Boolean']['output'];
   refreshAccessToken?: Maybe<RefreshAccessTokenResponse>;
   signUp: User;
+};
+
+
+export type MutationCreateBoardArgs = {
+  createBoardInput: CreateBoardInput;
 };
 
 
@@ -133,6 +147,13 @@ export type User = {
   username: Scalars['String']['output'];
 };
 
+export type CreateBoardMutationVariables = Exact<{
+  createBoardInput: CreateBoardInput;
+}>;
+
+
+export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, createDate: any, modifiedDate: any } };
+
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
 }>;
@@ -163,7 +184,7 @@ export type BoardsQueryVariables = Exact<{
 }>;
 
 
-export type BoardsQuery = { __typename?: 'Query', boards: { __typename?: 'PaginatedBoards', cursor?: number | null, boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, userId: string, email: string, createdAt: string, updatedAt: string } }> } };
+export type BoardsQuery = { __typename?: 'Query', boards: { __typename?: 'PaginatedBoards', cursor?: number | null, boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, reviews: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, userId: string, email: string, createdAt: string, updatedAt: string } }> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -171,6 +192,46 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, userId: string, username: string, email: string, updatedAt: string, createdAt: string } | null };
 
 
+export const CreateBoardDocument = gql`
+    mutation createBoard($createBoardInput: CreateBoardInput!) {
+  createBoard(createBoardInput: $createBoardInput) {
+    id
+    type
+    content
+    writerId
+    views
+    likes
+    createDate
+    modifiedDate
+  }
+}
+    `;
+export type CreateBoardMutationFn = Apollo.MutationFunction<CreateBoardMutation, CreateBoardMutationVariables>;
+
+/**
+ * __useCreateBoardMutation__
+ *
+ * To run a mutation, you first call `useCreateBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBoardMutation, { data, loading, error }] = useCreateBoardMutation({
+ *   variables: {
+ *      createBoardInput: // value for 'createBoardInput'
+ *   },
+ * });
+ */
+export function useCreateBoardMutation(baseOptions?: Apollo.MutationHookOptions<CreateBoardMutation, CreateBoardMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateBoardMutation, CreateBoardMutationVariables>(CreateBoardDocument, options);
+      }
+export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMutation>;
+export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
+export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation, CreateBoardMutationVariables>;
 export const LoginDocument = gql`
     mutation login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
@@ -333,6 +394,7 @@ export const BoardsDocument = gql`
       }
       views
       likes
+      reviews
       createDate
       modifiedDate
     }

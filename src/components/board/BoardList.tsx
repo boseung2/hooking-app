@@ -4,13 +4,18 @@ import { useBoardsQuery } from "@/generated/graphql";
 import {
   Box,
   Flex,
+  IconButton,
   SkeletonCircle,
   SkeletonText,
   StackDivider,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import BoardCard from "./BoardCard";
 import { Waypoint } from "react-waypoint";
+import { AddIcon } from "@chakra-ui/icons";
+import CreateBoardModal from "./CreateBoardModal";
+import { useUser } from "@/hooks/useUser";
 
 const Skeleton = () => (
   <Box w="100%" p="6">
@@ -33,6 +38,8 @@ function BoardList() {
       cursor: 1,
     },
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isLoggedIn } = useUser();
 
   if (loading)
     return (
@@ -46,26 +53,46 @@ function BoardList() {
   if (error) return <p>{error.message}</p>;
 
   return (
-    <VStack divider={<StackDivider borderColor="gray.200" />}>
-      {data?.boards.boards.map((board, i) => (
-        <Box key={board.id} w="100%">
-          {data.boards.cursor &&
-            i === data.boards.boards.length - LIMIT / 2 && (
-              <Waypoint
-                onEnter={() => {
-                  fetchMore({
-                    variables: {
-                      limit: LIMIT,
-                      cursor: data.boards.cursor,
-                    },
-                  });
-                }}
-              />
-            )}
-          <BoardCard board={board} />
-        </Box>
-      ))}
-    </VStack>
+    <>
+      <CreateBoardModal isOpen={isOpen} onClose={onClose} />
+      <Box>
+        <VStack divider={<StackDivider borderColor="gray.200" />}>
+          {data?.boards.boards.map((board, i) => (
+            <Box key={board.id} w="100%">
+              {data.boards.cursor &&
+                i === data.boards.boards.length - LIMIT / 2 && (
+                  <Waypoint
+                    onEnter={() => {
+                      fetchMore({
+                        variables: {
+                          limit: LIMIT,
+                          cursor: data.boards.cursor,
+                        },
+                      });
+                    }}
+                  />
+                )}
+              <BoardCard board={board} />
+            </Box>
+          ))}
+        </VStack>
+        {isLoggedIn && (
+          <Box position="sticky" bottom={20} pr={6} float="right">
+            <IconButton
+              isRound={true}
+              variant="solid"
+              colorScheme="blue"
+              aria-label="Done"
+              fontSize="28px"
+              w={14}
+              h={14}
+              icon={<AddIcon />}
+              onClick={onOpen}
+            />
+          </Box>
+        )}
+      </Box>
+    </>
   );
 }
 
