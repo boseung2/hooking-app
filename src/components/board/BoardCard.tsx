@@ -6,6 +6,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import { FaRegHeart, FaRegComment, FaEye } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { useUser } from "@/hooks/useUser";
+import { Link } from "@chakra-ui/next-js";
 
 dayjs.extend(relativeTime);
 
@@ -31,20 +32,24 @@ function BoardCard({ board }: BoardCardProps) {
             <Text fontWeight="bold">{board.writer.username}</Text>
             <Text color="gray.500">{dayjs(board.createDate).fromNow()}</Text>
           </Flex>
-          <Box
-            onClick={routeBoardPage}
-            style={{
-              whiteSpace: "pre-wrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              display: "-webkit-box",
-              WebkitLineClamp: 10,
-              WebkitBoxOrient: "vertical",
-              cursor: "pointer",
-            }}
+          <Link
+            href={`/${user?.userId}/board/${board.id}`}
+            _hover={{ textDecorationLine: "none" }}
           >
-            {board.content}
-          </Box>
+            <Box
+              style={{
+                whiteSpace: "pre-wrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: 10,
+                WebkitBoxOrient: "vertical",
+                cursor: "pointer",
+              }}
+            >
+              {board.content}
+            </Box>
+          </Link>
           <Flex gap="2" pt="3" align="center">
             <Icon as={FaRegComment} color="gray.500" />
             <Text color="gray.500" fontSize="sm">
