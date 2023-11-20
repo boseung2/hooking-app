@@ -38,7 +38,7 @@ const errorLink = onError(
 );
 
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_API_HOST,
+  uri: `${process.env.REACT_APP_API_HOST}/graphql`,
   credentials: "include",
 });
 
