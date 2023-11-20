@@ -2,12 +2,11 @@
 import { useUser } from "@/hooks/useUser";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { Container, Flex, Heading, IconButton } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import React from "react";
 import AuthBottomNavigation from "./AuthBottomNavigation";
+import { Link } from "@chakra-ui/next-js";
 
 function DetailLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const { isLoggedIn } = useUser();
   return (
     <Container
@@ -18,17 +17,16 @@ function DetailLayout({ children }: { children: React.ReactNode }) {
       p="0"
     >
       <Flex align="center">
-        <IconButton
-          variant="none"
-          aria-label="Done"
-          fontSize="20px"
-          w={14}
-          h={14}
-          icon={<ArrowBackIcon />}
-          onClick={() => {
-            router.push("/");
-          }}
-        />
+        <Link href="/">
+          <IconButton
+            variant="none"
+            aria-label="Done"
+            fontSize="20px"
+            w={14}
+            h={14}
+            icon={<ArrowBackIcon />}
+          />
+        </Link>
         <Heading as="h2" size="md">
           게시하기
         </Heading>
