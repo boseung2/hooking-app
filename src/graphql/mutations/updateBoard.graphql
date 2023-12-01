@@ -1,0 +1,7 @@
+mutation updateBoard($updateBoardInput: UpdateBoardInput!) {
+  updateBoard(updateBoardInput: $updateBoardInput) {
+    id
+    type
+    content
+  }
+}

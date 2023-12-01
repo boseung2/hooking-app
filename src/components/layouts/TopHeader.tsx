@@ -27,7 +27,9 @@ function TopHeader() {
       borderColor="gray.100"
     >
       <Box />
+
       <Image src="/assets/logo_black.png" alt="Hooking" width={20} height={6} />
+
       {isLoggedIn ? (
         <Menu boundary="scrollParent">
           <MenuButton

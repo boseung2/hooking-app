@@ -27,6 +27,10 @@ export type Board = {
   createDate: Scalars['DateTime']['output'];
   /** 게시글 고유 아이디 */
   id: Scalars['Int']['output'];
+  /** 삭제여부 */
+  isDeleted: Scalars['Boolean']['output'];
+  /** 좋아요 여부 */
+  isLike: Scalars['Boolean']['output'];
   /** 좋아요 수 */
   likes: Scalars['Int']['output'];
   /** 수정일 */
@@ -72,15 +76,28 @@ export type LoginResponse = {
 export type Mutation = {
   __typename?: 'Mutation';
   createBoard: Board;
+  deleteBoard: Scalars['Boolean']['output'];
+  likeBoard: Scalars['Boolean']['output'];
   login: LoginResponse;
   logout: Scalars['Boolean']['output'];
   refreshAccessToken?: Maybe<RefreshAccessTokenResponse>;
   signUp: User;
+  updateBoard: Board;
 };
 
 
 export type MutationCreateBoardArgs = {
   createBoardInput: CreateBoardInput;
+};
+
+
+export type MutationDeleteBoardArgs = {
+  boardId: Scalars['Int']['input'];
+};
+
+
+export type MutationLikeBoardArgs = {
+  boardId: Scalars['Int']['input'];
 };
 
 
@@ -91,6 +108,11 @@ export type MutationLoginArgs = {
 
 export type MutationSignUpArgs = {
   signUpInput: SignUpInput;
+};
+
+
+export type MutationUpdateBoardArgs = {
+  updateBoardInput: UpdateBoardInput;
 };
 
 export type PaginatedBoards = {
@@ -137,15 +159,22 @@ export type SignUpInput = {
   username: Scalars['String']['input'];
 };
 
+/** 게시판 수정 인풋 데이터 */
+export type UpdateBoardInput = {
+  content: Scalars['String']['input'];
+  id: Scalars['Float']['input'];
+  type: Scalars['String']['input'];
+};
+
 export type User = {
   __typename?: 'User';
   /** 생성 일자 */
-  createdAt: Scalars['String']['output'];
+  createdAt: Scalars['DateTime']['output'];
   /** 유저 이메일 */
   email: Scalars['String']['output'];
   id: Scalars['Int']['output'];
   /** 업데이트 일자 */
-  updatedAt: Scalars['String']['output'];
+  updatedAt: Scalars['DateTime']['output'];
   /** 유저 아이디 */
   userId: Scalars['String']['output'];
   /** 유저 이름 */
@@ -158,6 +187,20 @@ export type CreateBoardMutationVariables = Exact<{
 
 
 export type CreateBoardMutation = { __typename?: 'Mutation', createBoard: { __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, createDate: any, modifiedDate: any } };
+
+export type DeleteBoardMutationVariables = Exact<{
+  boardId: Scalars['Int']['input'];
+}>;
+
+
+export type DeleteBoardMutation = { __typename?: 'Mutation', deleteBoard: boolean };
+
+export type LikeBoardMutationVariables = Exact<{
+  boardId: Scalars['Int']['input'];
+}>;
+
+
+export type LikeBoardMutation = { __typename?: 'Mutation', likeBoard: boolean };
 
 export type LoginMutationVariables = Exact<{
   loginInput: LoginInput;
@@ -181,14 +224,21 @@ export type SignUpMutationVariables = Exact<{
 }>;
 
 
-export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', email: string, username: string, userId: string, createdAt: string, updatedAt: string, id: number } };
+export type SignUpMutation = { __typename?: 'Mutation', signUp: { __typename?: 'User', email: string, username: string, userId: string, createdAt: any, updatedAt: any, id: number } };
+
+export type UpdateBoardMutationVariables = Exact<{
+  updateBoardInput: UpdateBoardInput;
+}>;
+
+
+export type UpdateBoardMutation = { __typename?: 'Mutation', updateBoard: { __typename?: 'Board', id: number, type: string, content: string } };
 
 export type BoardQueryVariables = Exact<{
   boardId: Scalars['Int']['input'];
 }>;
 
 
-export type BoardQuery = { __typename?: 'Query', board?: { __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, reviews: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, userId: string, email: string, createdAt: string, updatedAt: string } } | null };
+export type BoardQuery = { __typename?: 'Query', board?: { __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, isLike: boolean, reviews: number, createDate: any, modifiedDate: any, isDeleted: boolean, writer: { __typename?: 'User', id: number, username: string, userId: string, email: string, createdAt: any, updatedAt: any } } | null };
 
 export type BoardsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -196,19 +246,19 @@ export type BoardsQueryVariables = Exact<{
 }>;
 
 
-export type BoardsQuery = { __typename?: 'Query', boards: { __typename?: 'PaginatedBoards', cursor?: number | null, boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, reviews: number, createDate: any, modifiedDate: any, writer: { __typename?: 'User', id: number, username: string, userId: string, email: string, createdAt: string, updatedAt: string } }> } };
+export type BoardsQuery = { __typename?: 'Query', boards: { __typename?: 'PaginatedBoards', cursor?: number | null, boards: Array<{ __typename?: 'Board', id: number, type: string, content: string, writerId: number, views: number, likes: number, isLike: boolean, reviews: number, createDate: any, modifiedDate: any, isDeleted: boolean, writer: { __typename?: 'User', id: number, username: string, userId: string, email: string, createdAt: any, updatedAt: any } }> } };
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, userId: string, username: string, email: string, updatedAt: string, createdAt: string } | null };
+export type MeQuery = { __typename?: 'Query', me?: { __typename?: 'User', id: number, userId: string, username: string, email: string, updatedAt: any, createdAt: any } | null };
 
 export type UserQueryVariables = Exact<{
   userId: Scalars['String']['input'];
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, userId: string, username: string, updatedAt: string, createdAt: string } | null };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: number, userId: string, username: string, updatedAt: any, createdAt: any } | null };
 
 
 export const CreateBoardDocument = gql`
@@ -251,6 +301,68 @@ export function useCreateBoardMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateBoardMutationHookResult = ReturnType<typeof useCreateBoardMutation>;
 export type CreateBoardMutationResult = Apollo.MutationResult<CreateBoardMutation>;
 export type CreateBoardMutationOptions = Apollo.BaseMutationOptions<CreateBoardMutation, CreateBoardMutationVariables>;
+export const DeleteBoardDocument = gql`
+    mutation deleteBoard($boardId: Int!) {
+  deleteBoard(boardId: $boardId)
+}
+    `;
+export type DeleteBoardMutationFn = Apollo.MutationFunction<DeleteBoardMutation, DeleteBoardMutationVariables>;
+
+/**
+ * __useDeleteBoardMutation__
+ *
+ * To run a mutation, you first call `useDeleteBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBoardMutation, { data, loading, error }] = useDeleteBoardMutation({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useDeleteBoardMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBoardMutation, DeleteBoardMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBoardMutation, DeleteBoardMutationVariables>(DeleteBoardDocument, options);
+      }
+export type DeleteBoardMutationHookResult = ReturnType<typeof useDeleteBoardMutation>;
+export type DeleteBoardMutationResult = Apollo.MutationResult<DeleteBoardMutation>;
+export type DeleteBoardMutationOptions = Apollo.BaseMutationOptions<DeleteBoardMutation, DeleteBoardMutationVariables>;
+export const LikeBoardDocument = gql`
+    mutation likeBoard($boardId: Int!) {
+  likeBoard(boardId: $boardId)
+}
+    `;
+export type LikeBoardMutationFn = Apollo.MutationFunction<LikeBoardMutation, LikeBoardMutationVariables>;
+
+/**
+ * __useLikeBoardMutation__
+ *
+ * To run a mutation, you first call `useLikeBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeBoardMutation, { data, loading, error }] = useLikeBoardMutation({
+ *   variables: {
+ *      boardId: // value for 'boardId'
+ *   },
+ * });
+ */
+export function useLikeBoardMutation(baseOptions?: Apollo.MutationHookOptions<LikeBoardMutation, LikeBoardMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LikeBoardMutation, LikeBoardMutationVariables>(LikeBoardDocument, options);
+      }
+export type LikeBoardMutationHookResult = ReturnType<typeof useLikeBoardMutation>;
+export type LikeBoardMutationResult = Apollo.MutationResult<LikeBoardMutation>;
+export type LikeBoardMutationOptions = Apollo.BaseMutationOptions<LikeBoardMutation, LikeBoardMutationVariables>;
 export const LoginDocument = gql`
     mutation login($loginInput: LoginInput!) {
   login(loginInput: $loginInput) {
@@ -394,6 +506,41 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const UpdateBoardDocument = gql`
+    mutation updateBoard($updateBoardInput: UpdateBoardInput!) {
+  updateBoard(updateBoardInput: $updateBoardInput) {
+    id
+    type
+    content
+  }
+}
+    `;
+export type UpdateBoardMutationFn = Apollo.MutationFunction<UpdateBoardMutation, UpdateBoardMutationVariables>;
+
+/**
+ * __useUpdateBoardMutation__
+ *
+ * To run a mutation, you first call `useUpdateBoardMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBoardMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBoardMutation, { data, loading, error }] = useUpdateBoardMutation({
+ *   variables: {
+ *      updateBoardInput: // value for 'updateBoardInput'
+ *   },
+ * });
+ */
+export function useUpdateBoardMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBoardMutation, UpdateBoardMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateBoardMutation, UpdateBoardMutationVariables>(UpdateBoardDocument, options);
+      }
+export type UpdateBoardMutationHookResult = ReturnType<typeof useUpdateBoardMutation>;
+export type UpdateBoardMutationResult = Apollo.MutationResult<UpdateBoardMutation>;
+export type UpdateBoardMutationOptions = Apollo.BaseMutationOptions<UpdateBoardMutation, UpdateBoardMutationVariables>;
 export const BoardDocument = gql`
     query board($boardId: Int!) {
   board(boardId: $boardId) {
@@ -411,9 +558,11 @@ export const BoardDocument = gql`
     }
     views
     likes
+    isLike
     reviews
     createDate
     modifiedDate
+    isDeleted
   }
 }
     `;
@@ -469,9 +618,11 @@ export const BoardsDocument = gql`
       }
       views
       likes
+      isLike
       reviews
       createDate
       modifiedDate
+      isDeleted
     }
   }
 }

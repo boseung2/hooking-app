@@ -1,5 +1,9 @@
 "use client";
-import { LoginMutationVariables, useLoginMutation } from "@/generated/graphql";
+import {
+  BoardsDocument,
+  LoginMutationVariables,
+  useLoginMutation,
+} from "@/generated/graphql";
 import {
   Modal,
   ModalBody,
@@ -28,7 +32,9 @@ interface LoginModalProps {
 }
 
 function LoginModal({ isOpen, onClose }: LoginModalProps) {
-  const [login, { loading }] = useLoginMutation();
+  const [login, { loading }] = useLoginMutation({
+    refetchQueries: [{ query: BoardsDocument }],
+  });
   const {
     register,
     handleSubmit,
@@ -106,7 +112,7 @@ function LoginModal({ isOpen, onClose }: LoginModalProps) {
               </FormControl>
             </VStack>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter justifyContent="center">
             <Button
               type="submit"
               colorScheme="blue"

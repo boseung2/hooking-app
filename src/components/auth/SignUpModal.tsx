@@ -153,7 +153,7 @@ function SignUpModal({ isOpen, onClose }: SignUpModalProps) {
               </FormControl>
             </VStack>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter justifyContent="center">
             <Button
               type="submit"
               colorScheme="blue"

@@ -14,8 +14,10 @@ query board($boardId: Int!) {
     }
     views
     likes
+    isLike
     reviews
     createDate
     modifiedDate
+    isDeleted
   }
 }

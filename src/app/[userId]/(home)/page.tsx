@@ -5,7 +5,6 @@ import React from "react";
 import dayjs from "dayjs";
 
 function Page({ params }: { params: { userId: string } }) {
-  console.log(params.userId);
   const { data, loading, error } = useUserQuery({
     variables: { userId: params.userId },
   });

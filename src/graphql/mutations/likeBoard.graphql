@@ -1,0 +1,3 @@
+mutation likeBoard($boardId: Int!) {
+  likeBoard(boardId: $boardId)
+}

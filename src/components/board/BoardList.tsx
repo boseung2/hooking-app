@@ -32,7 +32,7 @@ const Skeleton = () => (
 
 function BoardList() {
   const LIMIT = 6;
-  const { data, loading, error, fetchMore } = useBoardsQuery({
+  const { data, loading, error, fetchMore, refetch } = useBoardsQuery({
     variables: {
       limit: LIMIT,
       cursor: 1,
@@ -72,7 +72,7 @@ function BoardList() {
                     }}
                   />
                 )}
-              <BoardCard board={board} />
+              <BoardCard board={board} refetchBoards={refetch} />
             </Box>
           ))}
         </VStack>

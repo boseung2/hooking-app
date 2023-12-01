@@ -16,9 +16,11 @@ query Boards($limit: Int, $cursor: Int) {
       }
       views
       likes
+      isLike
       reviews
       createDate
       modifiedDate
+      isDeleted
     }
   }
 }
